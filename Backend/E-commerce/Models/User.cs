@@ -5,7 +5,26 @@ namespace E_commerce.Models
 {
     public class User
     {
-        
+        [Key]
+        public Guid Id { get; set; }
+        [Required(ErrorMessage = "Name is required."), StringLength(100)]
+        public string Name { get; set; }
+        [Required(ErrorMessage ="Password is required."), StringLength(100)]
+        public string Password { get; set; }
+        [Required(ErrorMessage = "Email is required."), StringLength(100),EmailAddress]
+        public string Email { get; set; }
+        [StringLength(100)]
+        public string FullName { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Column(TypeName = "decimal(18,2)"), Range(0,double.MaxValue)]
+        public decimal totalSpend { get; set; } = 0;
+        public Guid RoleId { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; }
+        public Guid CartId { get; set; }
+        [ForeignKey("CartId")]
+        public virtual Cart Cart { get; set; }
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     }
 }
