@@ -24,7 +24,6 @@ namespace E_commerce.Models
         public Guid CartId { get; set; }
         [ForeignKey("CartId")]
         public virtual Cart Cart { get; set; }
-        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     }
 }
