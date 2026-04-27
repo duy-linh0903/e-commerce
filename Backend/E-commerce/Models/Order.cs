@@ -14,6 +14,9 @@ namespace E_commerce.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal SubTotal { get; set; }
 
+        [Column(TypeName="decimal(18,2)")]
+        public decimal DiscountAmount { get; set; }
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 
@@ -39,6 +42,7 @@ namespace E_commerce.Models
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
 
         // 1 order có thể có 1 hoặc không support request => không icollection
+        public virtual SupportRequest? SupportRequest { get; set; }
 
         public Guid? VoucherId { get; set; }
         // trong trường hợp order không dùng voucher => voucher có thể null =>> Guid?: chấp nhận giá trị null
