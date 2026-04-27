@@ -23,9 +23,6 @@ namespace E_commerce.Models
         public Guid RoleId { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
-        public Guid CartId { get; set; }
-        [ForeignKey("CartId")]
-        public virtual Cart Cart { get; set; }
 
     }
 }
