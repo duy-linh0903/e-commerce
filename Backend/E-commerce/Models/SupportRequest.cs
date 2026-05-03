@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,17 +14,17 @@ namespace E_commerce.Models
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
 
-        public Guid StaffId { get; set; }
+        public Guid? StaffId { get; set; }
 
-        [ForeignKey]
-        public virtual User User { get; set; }
+        [ForeignKey(nameof(StaffId))]
+        public virtual User? Staff { get; set; }
 
-        public Guid OrderId { get; set; }
+        public Guid? OrderId { get; set; }
 
-        [ForeignKey]
-        public virtual Order Order { get; set; }
+        [ForeignKey(nameof(OrderId))]
+        public virtual Order? Order { get; set; }
 
-        [Required(ErrorMessage = "Title is required.")]
+        [Required(ErrorMessage = "Subject is required.")]
         [StringLength(150)]
         public string Subject { get; set; }
 
@@ -35,10 +34,9 @@ namespace E_commerce.Models
 
         [Required]
         [StringLength(50)]
-        public string Status { get; set; } = "Pending"; 
+        public string Status { get; set; } = "Pending";
         // Pending / InProgress / Resolved
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-
     }
 }
