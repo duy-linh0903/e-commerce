@@ -21,6 +21,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductVariantRepository, ProductVariantRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 
 // Services
 builder.Services.AddScoped<ISupportService, SupportService>();
@@ -37,6 +39,7 @@ builder.Services.AddScoped<IPaymentMethodService, PaymentMethodService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"]!;

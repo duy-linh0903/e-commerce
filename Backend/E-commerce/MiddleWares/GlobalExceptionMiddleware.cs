@@ -18,14 +18,39 @@ namespace E_commerce.Middlewares
         public async Task InvokeAsync(HttpContext context)
         {
             try
+    {
+        await _next(context);
+
+        // Xử lý sau khi pipeline chạy xong
+        if (!context.Response.HasStarted)
+        {
+            if (context.Response.StatusCode == 401)
             {
-                await _next(context);
+                context.Response.ContentType = "application/json";
+                var response = BaseResponse<object>.Fail("Unauthorized. Please login first.", 401);
+                var json = JsonSerializer.Serialize(response, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+                await context.Response.WriteAsync(json);
             }
-            catch (Exception ex)
+            else if (context.Response.StatusCode == 403)
             {
-                _logger.LogError(ex, "Unhandled exception");
-                await HandleExceptionAsync(context, ex);
+                context.Response.ContentType = "application/json";
+                var response = BaseResponse<object>.Fail("You do not have permission to access this resource.", 403);
+                var json = JsonSerializer.Serialize(response, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+                await context.Response.WriteAsync(json);
             }
+        }
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Unhandled exception");
+        await HandleExceptionAsync(context, ex);
+    }
         }
 
         private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
