@@ -13,7 +13,7 @@ namespace E_commerce.Models
         public Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 

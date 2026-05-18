@@ -1,52 +1,63 @@
-﻿using E_commerce.Data;
-using E_commerce.DTOs.Auth;
+using E_commerce.DTOs.User;
 using E_commerce.Models;
 using E_commerce.Repositories.Interfaces;
 using E_commerce.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce.Services
 {
-    public class RegisterService : IRegisterService
+    public class AdminUserService : IAdminUserService
     {
+        private static readonly HashSet<string> AllowedRoles = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "Admin",
+            "Staff"
+        };
+
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;
 
-        public RegisterService(IUserRepository userRepository, IRoleRepository roleRepository)
+        public AdminUserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
         }
 
-        public async Task<ServiceResponse<UserInfoResponse>> RegisterAsync(RegisterRequest dto)
+        public async Task<ServiceResponse<AdminCreateUserResponse>> CreateStaffOrAdminAsync(AdminCreateUserRequest dto)
         {
-            var response = new ServiceResponse<UserInfoResponse>();
+            var response = new ServiceResponse<AdminCreateUserResponse>();
 
             var email = dto.Email.Trim().ToLower();
-            var name = dto.Name.Trim();
-            var phoneNumber = dto.PhoneNumber.Trim();
-
             if (!await _userRepository.IsEmailUniqueAsync(email))
             {
                 response.IsSuccess = false;
                 response.Message = "Email already exists.";
                 return response;
             }
-            var role = await _roleRepository.GetByNameAsync("Customer");
+
+            var roleName = dto.RoleName.Trim();
+            if (!AllowedRoles.Contains(roleName))
+            {
+                response.IsSuccess = false;
+                response.Message = "Role must be Admin or Staff.";
+                return response;
+            }
+
+            var role = await _roleRepository.GetByNameAsync(roleName);
             if (role == null)
             {
                 response.IsSuccess = false;
-                response.Message = "Default role 'Customer' not found in system.";
+                response.Message = $"Role '{roleName}' not found in system.";
                 return response;
             }
 
             var user = new User
             {
-                Name = name,
+                Id = Guid.NewGuid(),
+                Name = dto.Name.Trim(),
                 Email = email,
-                PhoneNumber = phoneNumber,
+                PhoneNumber = dto.PhoneNumber.Trim(),
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                FullName = name,
+                FullName = dto.Name.Trim(),
                 RoleId = role.Id
             };
 
@@ -61,8 +72,14 @@ namespace E_commerce.Services
             }
 
             response.IsSuccess = true;
-            response.Message = "Registration successful";
-            response.Data = new UserInfoResponse { Email = dto.Email, Name = dto.Name };
+            response.Message = "User created successfully.";
+            response.Data = new AdminCreateUserResponse
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                RoleName = role.Name
+            };
             return response;
         }
     }

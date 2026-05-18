@@ -26,13 +26,13 @@ namespace E_commerce.Models
         public Guid CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         [Required(ErrorMessage = "BrandId is required.")]
         public Guid BrandId { get; set; }
 
         [ForeignKey(nameof(BrandId))]
-        public virtual Brand Brand { get; set; }
+        public virtual Brand? Brand { get; set; }
 
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
         public virtual ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
