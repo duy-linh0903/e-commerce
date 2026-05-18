@@ -516,3 +516,8 @@ GO
 -- Sửa đường dẫn rồi bỏ comment để backup:
 -- BACKUP DATABASE ECommerceDB TO DISK = 'D:\Backup\ECommerceDB.bak' WITH FORMAT, NAME = 'ECommerceDB Full Backup';
 -- GO
+
+
+ALTER TABLE [Users]
+ADD [IsDeleted] bit NOT NULL DEFAULT 0;
+GO
