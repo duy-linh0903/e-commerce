@@ -21,6 +21,9 @@ namespace E_commerce.Models
         [Column(TypeName = "decimal(18,2)"), Range(0,double.MaxValue)]
         public decimal totalSpend { get; set; } = 0;
         public Guid RoleId { get; set; }
+
+        public bool IsDeleted { get; set; } = false;
+
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
 
