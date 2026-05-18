@@ -17,6 +17,7 @@ namespace E_commerce.Models
         public string? FullName { get; set; }
         [StringLength(10)]
         public string PhoneNumber { get; set; }
+        public string? Address { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         [Column(TypeName = "decimal(18,2)"), Range(0,double.MaxValue)]
         public decimal totalSpend { get; set; } = 0;
@@ -25,7 +26,8 @@ namespace E_commerce.Models
         public bool IsDeleted { get; set; } = false;
 
         [ForeignKey("RoleId")]
-        public virtual Role Role { get; set; }
+        public virtual Role? Role { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public virtual Cart Cart { get; set; }
 

@@ -3,9 +3,9 @@ using E_commerce.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace E_commerce.Controllers.RegisterController
+namespace E_commerce.Controllers.AuthController
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class RegisterController : ControllerBase
     {

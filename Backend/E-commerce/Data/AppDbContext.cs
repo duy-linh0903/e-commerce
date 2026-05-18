@@ -29,7 +29,8 @@ namespace E_commerce.Data
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
-                .IsUnique();
+                .IsUnique()
+                .HasFilter("[IsDeleted] = 0");
 
             modelBuilder.Entity<Voucher>()
                 .HasIndex(v => v.Code)
